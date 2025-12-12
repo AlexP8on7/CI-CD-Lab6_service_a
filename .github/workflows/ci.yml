@@ -1,7 +1,7 @@
 name: Build & Push Image
 on:
   push:
-    branches: [master]
+    branches: [main, master, service_a]
   workflow_dispatch:
 
 jobs:
@@ -12,9 +12,6 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set image name
-        run: echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}/service_a" >> $GITHUB_ENV
 
       - name: Login to GHCR
         uses: docker/login-action@v3
@@ -28,6 +25,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha }}
+          tags: ghcr.io/${{ github.repository }}/service_a:latest,ghcr.io/${{ github.repository }}/service_a:${{ github.sha }}
