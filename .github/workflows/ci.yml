@@ -13,6 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Set lowercase repo name
+        run: echo "REPO_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
@@ -25,4 +28,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}/service_a:latest,ghcr.io/${{ github.repository }}/service_a:${{ github.sha }}
+          tags: ghcr.io/${{ env.REPO_NAME }}/service_a:latest,ghcr.io/${{ env.REPO_NAME }}/service_a:${{ github.sha }}
